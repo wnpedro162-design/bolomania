@@ -4,6 +4,7 @@ Projeto de informática da turma **RGI61** para o gerenciamento de uma loja de b
 feito em **PHP + MySQL (padrão MVC)**.
 
 **Alunos:** Pedro Ribeiro e Lukkas Carvalho
+
 Tem duas partes que usam o mesmo banco e o mesmo estoque:
 
 | Parte | Endereço | Quem usa |
