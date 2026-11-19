@@ -18,7 +18,9 @@ $tpMenu    = [
     'entrada'    => ['Entradas', false],
     'venda'      => ['Vendas', false],
     'relatorio'  => ['Relatórios', false],
+    'suporte'    => ['Suporte', false],
 ];
+
 $tpE = static fn($v): string => htmlspecialchars((string) $v, ENT_QUOTES, 'UTF-8');
 ?>
 <header class="bm-topo">

@@ -47,7 +47,7 @@ $svg = fn(string $k) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentCol
 <title>Produtos - Bolo Mania</title>
 <link rel="icon" type="image/png" href="/bolomania/public/imagem/logo.png?v=3">
 <link rel="stylesheet" href="/bolomania/public/assets/css/style.css?v=3">
-<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=4">
+<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=7">
 </head>
 <body class="bm">
 

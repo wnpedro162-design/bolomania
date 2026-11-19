@@ -19,7 +19,7 @@ $disponiveis = count(array_filter($bolos, fn($b) => (int) $b['estoque'] > 0));
 <title>Vendas — Bolo Mania</title>
 <link rel="icon" type="image/png" href="/bolomania/public/imagem/logo.png?v=3">
 <link rel="stylesheet" href="/bolomania/public/assets/css/style.css?v=3">
-<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=4">
+<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=7">
 </head>
 <body class="bm">
 

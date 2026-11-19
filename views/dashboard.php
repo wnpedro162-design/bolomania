@@ -28,6 +28,7 @@ $icone = [
     'loja'       => '<path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM4 9c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3"/>',
     'venda_kpi'  => '<path d="M4 17l5-5 4 4 7-7M15 9h5v5"/>',
     'alerta'     => '<path d="M12 4 3 20h18L12 4zM12 10v4M12 17v.5"/>',
+    'suporte'    => '<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="14" width="5" height="6" rx="2"/><rect x="17" y="14" width="5" height="6" rx="2"/>',
     'pedido'     => '<path d="M6 4h12v16l-3-2-3 2-3-2-3 2zM9 9h6M9 13h6"/>',
 ];
 $svg = fn(string $k) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $icone[$k] . '</svg>';
@@ -40,6 +41,7 @@ $modulos = [
     ['entrada',    'Entradas',     'Abasteça o estoque e registre NF',      false],
     ['venda',      'Vendas',       'Balcão com emissão de nota fiscal',     false],
     ['relatorio',  'Relatórios',   'Indicadores e exportação PDF/Excel',    false],
+    ['suporte',    'Suporte',      'WhatsApp e e-mail de atendimento',      false],
 ];
 ?>
 <!doctype html>
@@ -50,7 +52,7 @@ $modulos = [
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" href="/bolomania/public/imagem/logo.png?v=3">
 <link rel="stylesheet" href="/bolomania/public/assets/css/style.css?v=3">
-<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=4">
+<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=7">
 </head>
 
 <body class="bm">

@@ -11,7 +11,7 @@ $ativos = count(array_filter($fornecedores, fn($f) => (int) $f['ativo'] === 1));
 <title>Fornecedores - Bolo Mania</title>
 <link rel="icon" type="image/png" href="/bolomania/public/imagem/logo.png?v=3">
 <link rel="stylesheet" href="/bolomania/public/assets/css/style.css?v=3">
-<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=4">
+<link rel="stylesheet" href="/bolomania/public/assets/css/painel.css?v=7">
 </head>
 <body class="bm">
 
