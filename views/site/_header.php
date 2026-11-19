@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= e($titulo) ?> — Bolo Mania</title>
  <link rel="icon" type="image/png" href="public/imagem/logo.png?v=3">
-  <link rel="stylesheet" href="public/assets/css/loja.css?v=3">
+  <link rel="stylesheet" href="public/assets/css/loja.css?v=7">
 </head>
 <body>
 <a class="pular" href="#conteudo">Ir para o conteúdo</a>
@@ -29,6 +29,7 @@
     </form>
 
     <nav class="conta" aria-label="Minha conta">
+      <a href="<?= e(url('loja', 'contato')) ?>">Suporte</a>
       <?php if ($clienteNome): ?>
         <a href="<?= e(url('conta', 'meusDados')) ?>">Olá, <?= e(explode(' ', trim($clienteNome))[0]) ?></a>
         <a href="<?= e(url('pedido', 'meusPedidos')) ?>">Meus pedidos</a>

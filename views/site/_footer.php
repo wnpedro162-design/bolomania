@@ -7,8 +7,11 @@
       <p>Bolos artesanais feitos com carinho. Encomendas e entregas na região.</p>
     </div>
     <div>
-      <strong>Atendimento</strong>
-      <p>Seg. a sáb., 9h às 19h · contato@bolomania.com.br</p>
+      <strong>Suporte</strong>
+      <p>Seg. a sáb., 9h às 19h<br>
+        WhatsApp: <a href="https://wa.me/5521965535733" target="_blank" rel="noopener">(21) 96553-5733</a><br>
+        <a href="mailto:lukkasoliveira074@gmail.com">lukkasoliveira074@gmail.com</a></p>
+      <p><a href="index.php?controller=loja&amp;action=contato">Central de suporte</a></p>
     </div>
     <div>
       <strong>Sistema</strong>
