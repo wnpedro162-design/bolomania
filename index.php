@@ -76,6 +76,11 @@ switch ($controller) {
         $c = new UsuarioController();
         break;
 
+    case 'suporte':
+        require_once __DIR__ . '/controllers/SuporteController.php';
+        $c = new SuporteController();
+        break;
+
     case 'cep':
         require_once __DIR__ . '/controllers/CepController.php';
         $c = new CepController();
