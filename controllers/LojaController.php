@@ -114,4 +114,15 @@ class LojaController extends SiteBaseController
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($saida, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
+
+    /**
+     * Página "Fale conosco".
+     * GET mostra o formulário; POST valida e grava em contato_mensagem.
+     * index.php?controller=loja&action=contato
+     */
+    /** Página de suporte: só mostra o WhatsApp e o e-mail de atendimento. */
+    public function contato(): void
+    {
+        $this->render('contato', [], 'Suporte');
+    }
 }
