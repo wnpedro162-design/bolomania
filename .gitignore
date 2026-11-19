@@ -1,0 +1,16 @@
+# Arquivos que NÃO vão para o GitHub
+
+# documentos da apresentação (não são código)
+*.pdf
+*.pptx
+*.docx
+
+# backups antigos do banco
+bolomania (2).sql
+*.bak
+
+# arquivos do sistema / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
