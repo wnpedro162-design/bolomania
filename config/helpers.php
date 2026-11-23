@@ -47,8 +47,10 @@ function imagemProduto(int $produtoId): string
 {
     foreach (['jpg', 'png', 'webp'] as $ext) {
         $relativo = "public/uploads/produtos/{$produtoId}.{$ext}";
-        if (is_file(BASE_PATH . '/' . $relativo)) {
-            return $relativo;
+        $arquivo = BASE_PATH . '/' . $relativo;
+        if (is_file($arquivo)) {
+            // ?v= muda quando a foto é trocada, para o navegador não mostrar a antiga
+            return $relativo . '?v=' . filemtime($arquivo);
         }
     }
     return 'public/imagem/produto_sem_foto.png';
