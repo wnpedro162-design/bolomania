@@ -17,7 +17,7 @@ class Fornecedor
     public function listarTodos(): array
     {
         return $this->conn->query("
-            SELECT id, nome, cnpj, telefone, email, endereco, cep, ativo
+            SELECT id, nome, cnpj, telefone, email, logradouro, numero, complemento, bairro, cidade, uf, cep, ativo
             FROM fornecedor
             ORDER BY nome
         ")->fetchAll();
@@ -41,8 +41,8 @@ class Fornecedor
     public function inserir(array $d): int
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO fornecedor (nome, cnpj, telefone, email, endereco, cep, ativo)
-            VALUES (:nome, :cnpj, :telefone, :email, :endereco, :cep, 1)
+            INSERT INTO fornecedor (nome, cnpj, telefone, email, logradouro, numero, complemento, bairro, cidade, uf, cep, ativo)
+            VALUES (:nome, :cnpj, :telefone, :email, :logradouro, :numero, :complemento, :bairro, :cidade, :uf, :cep, 1)
         ");
         $stmt->execute($this->parametros($d));
         return (int) $this->conn->lastInsertId();
@@ -53,7 +53,8 @@ class Fornecedor
         $stmt = $this->conn->prepare("
             UPDATE fornecedor
             SET nome = :nome, cnpj = :cnpj, telefone = :telefone,
-                email = :email, endereco = :endereco, cep = :cep
+                email = :email, logradouro = :logradouro, numero = :numero,
+                complemento = :complemento, bairro = :bairro, cidade = :cidade, uf = :uf, cep = :cep
             WHERE id = :id
         ");
         $stmt->execute($this->parametros($d) + [':id' => $id]);
@@ -72,8 +73,6 @@ class Fornecedor
             ':cnpj'     => $d['cnpj'],
             ':telefone' => $d['telefone'],
             ':email'    => $d['email'],
-            ':endereco' => $d['endereco'],
-            ':cep'      => $d['cep'],
-        ];
+        ] + Endereco::paraBanco($d['endereco']);
     }
 }

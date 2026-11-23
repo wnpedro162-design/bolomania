@@ -38,14 +38,14 @@ class ClienteSite
     }
 
     /**
-     * @param array $d cpf, nome, email, senha, endereco, telefone
+     * @param array $d cpf, nome, email, senha, telefone + campos do endereço (Endereco::CAMPOS)
      * @throws RegraNegocioException se CPF ou e-mail já existem
      */
     public function criar(array $d): void
     {
         $stmt = $this->db->prepare(
-            "INSERT INTO cliente_site (cpf, nome, email, senha_hash, endereco, telefone)
-             VALUES (:cpf, :nome, :email, :senha_hash, :endereco, :telefone)"
+            "INSERT INTO cliente_site (cpf, nome, email, senha_hash, cep, logradouro, numero, complemento, bairro, cidade, uf, telefone)
+             VALUES (:cpf, :nome, :email, :senha_hash, :cep, :logradouro, :numero, :complemento, :bairro, :cidade, :uf, :telefone)"
         );
         try {
             $stmt->execute([
@@ -53,9 +53,8 @@ class ClienteSite
                 ':nome'       => $d['nome'],
                 ':email'      => $d['email'],
                 ':senha_hash' => password_hash($d['senha'], PASSWORD_DEFAULT),
-                ':endereco'   => $d['endereco'],
                 ':telefone'   => $d['telefone'] !== '' ? $d['telefone'] : null,
-            ]);
+            ] + Endereco::paraBanco($d, '', false));
         } catch (PDOException $ex) {
             if ($ex->getCode() === '23000') { // violação de PK/UNIQUE (corrida entre dois cadastros)
                 throw new RegraNegocioException('Já existe um cadastro com esse CPF ou e-mail.');
@@ -68,17 +67,18 @@ class ClienteSite
     {
         $stmt = $this->db->prepare(
             "UPDATE cliente_site
-             SET nome = :nome, email = :email, endereco = :endereco, telefone = :telefone
+             SET nome = :nome, email = :email, telefone = :telefone,
+                 cep = :cep, logradouro = :logradouro, numero = :numero, complemento = :complemento,
+                 bairro = :bairro, cidade = :cidade, uf = :uf
              WHERE cpf = :cpf"
         );
         try {
             $stmt->execute([
                 ':nome'     => $d['nome'],
                 ':email'    => $d['email'],
-                ':endereco' => $d['endereco'],
                 ':telefone' => $d['telefone'] !== '' ? $d['telefone'] : null,
                 ':cpf'      => $cpf,
-            ]);
+            ] + Endereco::paraBanco($d, '', false));
         } catch (PDOException $ex) {
             if ($ex->getCode() === '23000') {
                 throw new RegraNegocioException('Esse e-mail já está em uso por outro cadastro.');
@@ -128,7 +128,7 @@ public function anonimizar(string $cpf): void
          SET nome = 'Conta excluída',
              email = CONCAT('excluido+', cpf, '@removido.local'),
              senha_hash = :hashInvalido,
-             endereco = '—',
+             cep = '', logradouro = '—', numero = '', complemento = NULL, bairro = '', cidade = '', uf = '',
              telefone = NULL
          WHERE cpf = :cpf"
     );

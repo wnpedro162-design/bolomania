@@ -19,11 +19,12 @@ class Pedido
      * Cria o pedido, dá baixa no estoque e registra a saída em movimento_estoque,
      * tudo em UMA transação (ou grava tudo, ou nada).
      *
+     * @param array $enderecoEntrega campos de Endereco::CAMPOS
      * @param array $itens itens do carrinho (variacao_id, quantidade)
      * @return int id do pedido criado
      * @throws RegraNegocioException quando falta estoque ou o bolo saiu de linha
      */
-    public function criar(string $cpf, string $enderecoEntrega, string $formaPagamento, array $itens): int
+    public function criar(string $cpf, array $enderecoEntrega, string $formaPagamento, array $itens): int
     {
         if (!$itens) {
             throw new RegraNegocioException('Seu carrinho está vazio.');
@@ -73,16 +74,17 @@ class Pedido
             }
 
             $stmt = $this->db->prepare(
-                "INSERT INTO pedido (cliente_cpf, endereco_entrega, forma_pagamento, status, valor_total)
-                 VALUES (:cpf, :endereco, :forma, :status, :total)"
+                "INSERT INTO pedido (cliente_cpf, cep_entrega, logradouro_entrega, numero_entrega, complemento_entrega,
+                                     bairro_entrega, cidade_entrega, uf_entrega, forma_pagamento, status, valor_total)
+                 VALUES (:cpf, :cep_entrega, :logradouro_entrega, :numero_entrega, :complemento_entrega,
+                         :bairro_entrega, :cidade_entrega, :uf_entrega, :forma, :status, :total)"
             );
             $stmt->execute([
                 ':cpf'      => $cpf,
-                ':endereco' => $enderecoEntrega,
                 ':forma'    => $formaPagamento,
                 ':status'   => 'pago', // pagamento simulado: aprovado na hora
                 ':total'    => round($total, 2),
-            ]);
+            ] + Endereco::paraBanco($enderecoEntrega, '_entrega', false));
             $pedidoId = (int) $this->db->lastInsertId();
 
             $insItem = $this->db->prepare(

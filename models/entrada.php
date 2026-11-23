@@ -65,7 +65,7 @@ class Entrada
     {
         $stmt = $this->conn->prepare("
             SELECT e.*, f.nome AS fornecedor_nome, f.cnpj AS fornecedor_cnpj,
-                   f.endereco AS fornecedor_endereco
+                   f.logradouro, f.numero, f.complemento, f.bairro, f.cidade, f.uf, f.cep
             FROM entrada_mercadoria e
             INNER JOIN fornecedor f ON f.id = e.fornecedor_id
             WHERE e.id = :id
