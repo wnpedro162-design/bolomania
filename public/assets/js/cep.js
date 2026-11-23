@@ -1,7 +1,7 @@
 /* ==========================================================
    Bolo Mania — busca de endereço pelo CEP (manual 24.6)
-   Uso: <input id="campo-cep" ...> + <textarea name="endereco">
-        + <small id="status-cep"></small>
+   Uso: <input id="campo-cep"> + campos #end-logradouro, #end-bairro,
+        #end-cidade, #end-uf, #end-numero + <small id="status-cep">
    O navegador fala só com o NOSSO back-end (CepController),
    que por sua vez consulta o ViaCEP.
    ========================================================== */
@@ -10,7 +10,7 @@
     if (!campoCep) return;
 
     var status = document.getElementById('status-cep');
-    var campoEndereco = document.querySelector('textarea[name="endereco"]');
+    var campo = function (id) { return document.getElementById('end-' + id); };
 
     // máscara 00000-000 enquanto digita
     campoCep.addEventListener('input', function () {
@@ -31,18 +31,18 @@
             .then(function (resposta) { return resposta.json(); })
             .then(function (dados) {
                 if (dados.erro) {
-                    status.textContent = 'Erro: ' + dados.erro;
+                    status.textContent = 'Erro: ' + dados.erro + ' Preencha o endereço manualmente.';
                     return;
                 }
-                campoEndereco.value =
-                    dados.logradouro + ', ' +
-                    dados.bairro + ' - ' +
-                    dados.cidade + '/' + dados.estado;
+                if (dados.logradouro) campo('logradouro').value = dados.logradouro;
+                if (dados.bairro) campo('bairro').value = dados.bairro;
+                campo('cidade').value = dados.cidade || '';
+                campo('uf').value = dados.estado || '';
                 status.textContent = 'Endereço preenchido automaticamente. Complete o número.';
-                campoEndereco.focus();
+                campo('numero').focus();
             })
             .catch(function () {
-                status.textContent = 'Não foi possível consultar o CEP agora.';
+                status.textContent = 'Não foi possível consultar o CEP agora. Preencha manualmente.';
             });
     });
 })();
