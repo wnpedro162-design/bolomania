@@ -1,67 +1,59 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+/** Mostra a mensagem de erro de um campo, se houver. */
+$erroCampo = fn(string $c) => isset($erros[$c])
+    ? '<span class="campo__erro" id="erro-' . $c . '">' . e($erros[$c]) . '</span>' : '';
+$descrito = fn(string $c) => isset($erros[$c]) ? ' aria-invalid="true" aria-describedby="erro-' . $c . '"' : '';
+?>
+<section class="formulario">
+  <h1>Criar conta</h1>
+  <p class="formulario__intro">Com a conta você encomenda seus bolos e acompanha os pedidos.</p>
 
-<head>
-    <meta charset="UTF-8">
+  <?php if (isset($erros['geral'])): ?><div class="aviso aviso--erro" role="alert"><?= e($erros['geral']) ?></div><?php endif; ?>
 
-    <title>Cadastro - Bolo Mania</title>
+  <form action="<?= e(url('conta', 'cadastro')) ?>" method="post" novalidate>
+    <?= csrfCampo() ?>
 
-    <link rel="stylesheet" href="/bolomania/public/assets/css/style.css?v=3">
-</head>
-
-<body>
-
-<div class="cadastro-container">
-
-    <div class="cadastro-card">
-
-        <div class="brand">
-
-            <img src="/bolomania/public/imagem/logo.png?v=3" class="logo">
-
-            <div>
-                <h1>Bolo Mania</h1>
-                <small>Acesso ao sistema</small>
-            </div>
-
-        </div>
-
-        <form action="index.php?controller=usuario&action=store" method="POST">
-
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" required>
-
-            <label for="email">E-mail</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" required>
-
-            <div class="buttons">
-
-                <button type="submit" class="btn cadastrar-btn">
-                    Cadastrar
-                </button>
-
-            </div>
-
-        </form>
-
+    <div class="campo">
+      <label for="nome">Nome completo</label>
+      <input id="nome" type="text" name="nome" value="<?= e($old['nome']) ?>" maxlength="100" autocomplete="name" required<?= $descrito('nome') ?>>
+      <?= $erroCampo('nome') ?>
     </div>
 
-</div>
+    <div class="campo">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" name="email" value="<?= e($old['email']) ?>" maxlength="100" autocomplete="email" required<?= $descrito('email') ?>>
+      <?= $erroCampo('email') ?>
+    </div>
 
-</body>
-</html>
+    <div class="campo">
+      <label for="cpf">CPF</label>
+      <input id="cpf" type="text" name="cpf" value="<?= e(formatarCpf($old['cpf'])) ?>" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" data-mascara="cpf" required<?= $descrito('cpf') ?>>
+      <?= $erroCampo('cpf') ?>
+    </div>
 
+    <div class="campo">
+      <label for="telefone">Telefone <span class="campo__opcional">(opcional)</span></label>
+      <input id="telefone" type="text" name="telefone" value="<?= e(formatarTelefone($old['telefone'])) ?>" inputmode="tel" maxlength="15" placeholder="(21) 99999-9999" data-mascara="telefone" autocomplete="tel"<?= $descrito('telefone') ?>>
+      <?= $erroCampo('telefone') ?>
+    </div>
 
+    <?php $endOld = $old; $endErros = $erros; require __DIR__ . '/_endereco.php'; ?>
 
+    <div class="campo">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" name="senha" minlength="8" maxlength="72" autocomplete="new-password" required<?= $descrito('senha') ?>>
+      <span class="campo__ajuda">Mínimo de 8 caracteres.</span>
+      <?= $erroCampo('senha') ?>
+    </div>
 
+    <div class="campo">
+      <label for="senha_confirmacao">Confirmar senha</label>
+      <input id="senha_confirmacao" type="password" name="senha_confirmacao" maxlength="72" autocomplete="new-password" required<?= $descrito('senha_confirmacao') ?>>
+      <?= $erroCampo('senha_confirmacao') ?>
+    </div>
 
+    <button type="submit" class="botao botao--primario botao--cheio">Criar conta</button>
+  </form>
 
-
-
-
-
-
-
+  <p class="formulario__rodape">Já tem conta? <a href="<?= e(url('conta', 'login')) ?>">Entrar</a></p>
+</section>
