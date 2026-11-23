@@ -3,7 +3,7 @@
   <p>Recebemos o pedido <strong>#<?= (int) $pedido['id'] ?></strong>. O pagamento por <strong><?= $pedido['forma_pagamento'] === 'cartao' ? 'cartão' : 'Pix' ?></strong> foi aprovado e já estamos preparando o seu bolo.</p>
 
   <dl class="confirmacao__dados">
-    <div><dt>Entrega em</dt><dd><?= e($pedido['endereco_entrega']) ?></dd></div>
+    <div><dt>Entrega em</dt><dd><?= e(Endereco::formatar($pedido, '_entrega')) ?></dd></div>
     <div><dt>Total</dt><dd><?= e(moeda($pedido['valor_total'])) ?></dd></div>
   </dl>
 

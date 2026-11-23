@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= e($titulo) ?> — Bolo Mania</title>
  <link rel="icon" type="image/png" href="public/imagem/logo.png?v=3">
-  <link rel="stylesheet" href="public/assets/css/loja.css?v=7">
+  <link rel="stylesheet" href="public/assets/css/loja.css?v=8">
 </head>
 <body>
 <a class="pular" href="#conteudo">Ir para o conteúdo</a>

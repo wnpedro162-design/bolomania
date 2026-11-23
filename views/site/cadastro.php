@@ -37,11 +37,7 @@ $descrito = fn(string $c) => isset($erros[$c]) ? ' aria-invalid="true" aria-desc
       <?= $erroCampo('telefone') ?>
     </div>
 
-    <div class="campo">
-      <label for="endereco">Endereço</label>
-      <textarea id="endereco" name="endereco" rows="3" maxlength="255" autocomplete="street-address" placeholder="Rua, número, bairro, cidade/UF e CEP" required<?= $descrito('endereco') ?>><?= e($old['endereco']) ?></textarea>
-      <?= $erroCampo('endereco') ?>
-    </div>
+    <?php $endOld = $old; $endErros = $erros; require __DIR__ . '/_endereco.php'; ?>
 
     <div class="campo">
       <label for="senha">Senha</label>

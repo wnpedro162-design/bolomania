@@ -28,7 +28,7 @@
         </ul>
 
         <footer class="pedido__rodape">
-          <p>Entrega em: <?= e($p['endereco_entrega']) ?></p>
+          <p>Entrega em: <?= e(Endereco::formatar($p, '_entrega')) ?></p>
           <p>Pagamento: <?= $p['forma_pagamento'] === 'cartao' ? 'Cartão de crédito' : 'Pix' ?></p>
           <p class="pedido__total">Total <?= e(moeda($p['valor_total'])) ?></p>
         </footer>
