@@ -585,3 +585,11 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .suporte__cartao--horario { border-top-color: #9b1c31; }
 .suporte__cartao--horario .suporte__icone { background: #f8e6e9; color: #9b1c31; }
 @media (max-width: 860px) { .suporte { grid-template-columns: 1fr; } }
+
+/* ===== Endereço em campos separados ===== */
+.endereco-campos { border: 1px solid #e8ddd2; border-radius: 10px; padding: .4rem 1rem 1rem; margin: 0 0 1rem; display: grid; gap: .6rem; }
+.endereco-campos legend { font-weight: 700; padding: 0 .4rem; color: #3b1a0f; }
+.linha-campos { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; align-items: start; }
+.linha-campos__grande { grid-column: span 1; }
+.linha-campos:has(.linha-campos__grande) { grid-template-columns: 3fr 1fr; }
+@media (max-width: 600px) { .linha-campos, .linha-campos:has(.linha-campos__grande) { grid-template-columns: 1fr; } }
