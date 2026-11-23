@@ -39,9 +39,12 @@ class FornecedorController
             'cnpj'     => trim($_POST['cnpj'] ?? ''),
             'telefone' => $vazioParaNull($_POST['telefone'] ?? ''),
             'email'    => $vazioParaNull($_POST['email'] ?? ''),
-            'endereco' => $vazioParaNull($_POST['endereco'] ?? ''),
-            'cep'      => $vazioParaNull($_POST['cep'] ?? ''),
+            'endereco' => Endereco::doPost($_POST),
         ];
+        $errosEnd = Endereco::validar($dados['endereco'], false);
+        if ($errosEnd) {
+            $this->voltar('Endereço incompleto: ' . implode(' ', $errosEnd) . ' (ou deixe todos os campos de endereço vazios).', true, $id);
+        }
 
         $cnpjDigitos = preg_replace('/\D/', '', $dados['cnpj']);
 

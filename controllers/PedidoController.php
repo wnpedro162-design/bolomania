@@ -35,11 +35,7 @@ class PedidoController extends SiteBaseController
         $this->exigirLogin();
         $this->exigirPost(url('pedido', 'checkout'));
 
-        $campos = ['cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf'];
-        $old = ['endereco_opcao' => $_POST['endereco_opcao'] ?? 'cadastrado'];
-        foreach ($campos as $c) {
-            $old[$c] = trim((string) ($_POST[$c] ?? ''));
-        }
+        $old = ['endereco_opcao' => $_POST['endereco_opcao'] ?? 'cadastrado'] + Endereco::doPost($_POST);
 
         $carrinho = new Carrinho();
         $avisos = $carrinho->sincronizar();
@@ -54,24 +50,22 @@ class PedidoController extends SiteBaseController
 
         $cliente = (new ClienteSite())->buscarPorCpf($this->clienteCpf());
 
-        if ($old['endereco_opcao'] === 'cadastrado' && !empty($cliente['endereco'])) {
-            $endereco = $cliente['endereco'];
+        $cadastrado = Endereco::daLinha($cliente ?: []);
+        if ($old['endereco_opcao'] === 'cadastrado' && !Endereco::validar($cadastrado, true)) {
+            $endereco = $cadastrado;
         } else {
-            $obrigatorios = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'uf'];
-            $faltando = array_filter($obrigatorios, fn($c) => $old[$c] === '');
-            if ($faltando || strlen(somenteDigitos($old['cep'])) !== 8) {
+            $endereco = Endereco::daLinha($old);
+            $errosEnd = Endereco::validar($endereco, true);
+            if ($errosEnd) {
                 $this->render('checkout', [
                     'carrinho' => $carrinho,
                     'cliente'  => $cliente,
-                    'old'      => $old,
-                    'erro'     => 'Preencha todos os campos obrigatórios do endereço (CEP com 8 dígitos).',
+                    'old'      => $old + ['endereco_opcao' => 'novo'],
+                    'erros'    => $errosEnd,
+                    'erro'     => 'Confira os campos do endereço de entrega.',
                 ], 'Finalizar compra');
                 return;
             }
-
-            $endereco = "{$old['rua']}, {$old['numero']}"
-                . ($old['complemento'] !== '' ? " - {$old['complemento']}" : '')
-                . " - {$old['bairro']}, {$old['cidade']}/{$old['uf']} - CEP " . formatarCep($old['cep']);
         }
 
         $_SESSION['checkout_endereco'] = $endereco;
@@ -88,9 +82,9 @@ class PedidoController extends SiteBaseController
         $this->exigirLogin();
         $this->exigirPost(url('pedido', 'checkout'));
 
-        $endereco = $_SESSION['checkout_endereco'] ?? '';
+        $endereco = $_SESSION['checkout_endereco'] ?? null;
         $carrinho = new Carrinho();
-        if ($endereco === '' || $carrinho->vazio()) {
+        if (!is_array($endereco) || Endereco::validar($endereco, true) || $carrinho->vazio()) {
             redirecionar(url('pedido', 'checkout'));
         }
 

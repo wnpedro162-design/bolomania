@@ -39,9 +39,12 @@ class ClienteController
             'cpf_cnpj' => trim($_POST['cpf_cnpj'] ?? ''),
             'telefone' => $vazioParaNull($_POST['telefone'] ?? ''),
             'email'    => $vazioParaNull($_POST['email'] ?? ''),
-            'endereco' => $vazioParaNull($_POST['endereco'] ?? ''),
-            'cep'      => $vazioParaNull($_POST['cep'] ?? ''),
+            'endereco' => Endereco::doPost($_POST),
         ];
+        $errosEnd = Endereco::validar($dados['endereco'], false);
+        if ($errosEnd) {
+            $this->voltar('Endereço incompleto: ' . implode(' ', $errosEnd) . ' (ou deixe todos os campos de endereço vazios).', true, $id);
+        }
 
         $doc = preg_replace('/\D/', '', $dados['cpf_cnpj']);
         if ($dados['nome'] === '' || !in_array(strlen($doc), [11, 14], true)) {

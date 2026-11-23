@@ -20,7 +20,7 @@ class ContaController extends SiteBaseController
             redirecionar(url('conta', 'meusDados'));
         }
 
-        $old = ['nome' => '', 'email' => '', 'cpf' => '', 'endereco' => '', 'telefone' => ''];
+        $old = ['nome' => '', 'email' => '', 'cpf' => '', 'telefone' => ''] + array_fill_keys(Endereco::CAMPOS, '');
         $erros = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -109,8 +109,8 @@ class ContaController extends SiteBaseController
 
         $old = [
             'nome' => $cliente['nome'], 'email' => $cliente['email'], 'cpf' => $cliente['cpf'],
-            'endereco' => $cliente['endereco'], 'telefone' => (string) $cliente['telefone'],
-        ];
+            'telefone' => (string) $cliente['telefone'],
+        ] + Endereco::daLinha($cliente);
         $erros = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -167,8 +167,8 @@ class ContaController extends SiteBaseController
 
         $old = [
             'nome' => $cliente['nome'], 'email' => $cliente['email'], 'cpf' => $cliente['cpf'],
-            'endereco' => $cliente['endereco'], 'telefone' => (string) $cliente['telefone'],
-        ];
+            'telefone' => (string) $cliente['telefone'],
+        ] + Endereco::daLinha($cliente);
         $this->render('meus_dados', ['old' => $old, 'erros' => [], 'errosSenha' => $erros], 'Meus dados');
     }
 
@@ -180,9 +180,8 @@ class ContaController extends SiteBaseController
             'nome'     => trim((string) ($_POST['nome'] ?? '')),
             'email'    => mb_strtolower(trim((string) ($_POST['email'] ?? ''))),
             'cpf'      => somenteDigitos((string) ($_POST['cpf'] ?? '')),
-            'endereco' => trim((string) ($_POST['endereco'] ?? '')),
             'telefone' => somenteDigitos((string) ($_POST['telefone'] ?? '')),
-        ];
+        ] + Endereco::doPost($_POST);
     }
 
     /** Valida nome, e-mail, CPF, endereço e telefone. $cpfAtual != null = edição. */
@@ -202,9 +201,7 @@ class ContaController extends SiteBaseController
         if ($cpfAtual === null && !validarCpf($d['cpf'])) {
             $erros['cpf'] = 'Informe um CPF válido (11 números).';
         }
-        if (mb_strlen($d['endereco']) < 10 || mb_strlen($d['endereco']) > 255) {
-            $erros['endereco'] = 'Informe rua, número, bairro, cidade/UF e CEP (até 255 caracteres).';
-        }
+        $erros += Endereco::validar($d, true);
         if ($d['telefone'] !== '' && !in_array(strlen($d['telefone']), [10, 11], true)) {
             $erros['telefone'] = 'Telefone deve ter DDD + 8 ou 9 dígitos.';
         }
