@@ -12,7 +12,7 @@ $nf = [
     'destinatario_titulo' => 'Fornecedor (emitente da nota)',
     'destinatario'        => array_filter([
         $entrada['fornecedor_nome'] . ' — CNPJ ' . $entrada['fornecedor_cnpj'],
-        $entrada['fornecedor_endereco'] ?? '',
+        Endereco::formatar($entrada),
     ]),
     'itens'               => array_map(fn($i) => [
         'sku'        => $i['sku'],

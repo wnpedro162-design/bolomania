@@ -12,7 +12,7 @@ $nf = [
     'destinatario_titulo' => 'Destinatário',
     'destinatario'        => [
         $cliente['nome'] . ' — CPF ' . formatarCpf($cliente['cpf']),
-        'Entrega: ' . $pedido['endereco_entrega'],
+        'Entrega: ' . Endereco::formatar($pedido, '_entrega'),
         'Pagamento: ' . ($pedido['forma_pagamento'] === 'cartao' ? 'Cartão de crédito' : 'Pix'),
     ],
     'itens'               => array_map(fn($i) => [

@@ -60,7 +60,7 @@ $ativos = count(array_filter($fornecedores, fn($f) => (int) $f['ativo'] === 1));
                         <tr class="<?= $editar && (int) $editar['id'] === $id ? 'bm-linha--destaque' : '' ?>">
                             <td><strong><?= $h($f['nome']) ?></strong><small>#<?= $id ?><?= $f['email'] ? ' · ' . $h($f['email']) : '' ?></small></td>
                             <td style="white-space:nowrap;"><?= $h($f['cnpj']) ?><small><?= $h($f['telefone'] ?? '') ?></small></td>
-                            <td><?= $h($f['endereco'] ?? '-') ?><?php if (!empty($f['cep'])): ?><small>CEP <?= $h($f['cep']) ?></small><?php endif; ?></td>
+                            <td><?= $h(Endereco::formatar($f) ?: '-') ?></td>
                             <td><span class="bm-st <?= $ativo ? 'bm-st--ok' : 'bm-st--off' ?>"><?= $ativo ? 'Ativo' : 'Inativo' ?></span></td>
                             <td>
                                 <div class="bm-acoes-inline">
@@ -106,15 +106,7 @@ $ativos = count(array_filter($fornecedores, fn($f) => (int) $f['ativo'] === 1));
                     <label for="email">E-mail</label>
                     <input id="email" type="email" name="email" maxlength="100" value="<?= $editar ? $h($editar['email'] ?? '') : '' ?>">
                 </div>
-                <div class="bm-campo">
-                    <label for="campo-cep">CEP</label>
-                    <input type="text" id="campo-cep" name="cep" maxlength="9" placeholder="00000-000" value="<?= $editar ? $h($editar['cep'] ?? '') : '' ?>">
-                    <small class="bm-campo__ajuda" id="status-cep">Digite o CEP e o endereço é preenchido automaticamente.</small>
-                </div>
-                <div class="bm-campo">
-                    <label for="endereco">Endereço</label>
-                    <textarea id="endereco" name="endereco" rows="3" maxlength="255"><?= $editar ? $h($editar['endereco'] ?? '') : '' ?></textarea>
-                </div>
+                <?php $endVal = $editar ? Endereco::daLinha($editar) : []; require __DIR__ . '/_campos_endereco.php'; ?>
                 <div class="bm-form__botoes">
                     <button type="submit"><?= $editar ? 'Salvar alterações' : 'Cadastrar fornecedor' ?></button>
                     <a href="index.php?controller=fornecedor&action=index">Limpar</a>
@@ -126,7 +118,7 @@ $ativos = count(array_filter($fornecedores, fn($f) => (int) $f['ativo'] === 1));
     <p class="bm-rodape">Bolo Mania · Sistema de gestão da confeitaria</p>
 </main>
 
-<script src="/bolomania/public/assets/js/cep.js?v=2"></script>
+<script src="/bolomania/public/assets/js/cep.js?v=3"></script>
 <script src="/bolomania/public/assets/js/painel.js?v=1"></script>
 </body>
 </html>
